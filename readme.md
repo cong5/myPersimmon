@@ -1,6 +1,6 @@
 ## MyPersimmon
 
-![macbook]()
+![macbook](https://raw.githubusercontent.com/Cong5/myPersimmon/master/public/images/screen.jpg)
 
 
 本项目使用 PHP 框架 [Laravel 5.4](https://doc.laravel-china.org/docs/5.4/) 进行开发。 
