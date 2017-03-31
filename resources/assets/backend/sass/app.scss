@@ -1,0 +1,101 @@
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+
+/* 滚动条 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-button:vertical {
+  display: none;
+}
+
+::-webkit-scrollbar-track:vertical {
+  background-color: black;
+}
+
+::-webkit-scrollbar-track-piece {
+  background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb:vertical {
+  margin-right: 10px;
+  background-color: #999;
+}
+
+::-webkit-scrollbar-thumb:vertical:hover {
+  background-color: #666;
+}
+
+::-webkit-scrollbar-corner:vertical {
+  background-color: #535353;
+}
+
+::-webkit-scrollbar-resizer:vertical {
+  background-color: #FF6E00;
+}
+
+.pit-loadding-box {
+  width: 100%;
+  margin-top: 15%;
+}
+
+.pit-loading-img {
+  width: 400px;
+  height: 300px;
+  display: block;
+  margin: 0 auto;
+}
+
+.pit-content {
+  background: #FFF;
+  padding: 20px;
+}
+
+.pit-action-btn {
+  margin: 20px 0;
+}
+
+.el-pagination {
+  padding: 20px 0px!important;
+}
+
+.myForm {
+  width: 60%;
+}
+
+
+.fl {
+  float: left;
+}
+.fr {
+  float: right;
+}
+.avatar-96 {
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+}
+
+.comment-avatar {
+  display: inline-block;
+  width: 60px;
+  float: left;
+  margin-right: 15px;
+}
+.comment-item p {
+  padding: 0;
+  margin: 0;
+}
+
+@import "../../common/sass/markdown.css";
+@import '../../../../node_modules/element-ui/lib/theme-default/index.css';
+@import "../../../../node_modules/font-awesome/css/font-awesome.min.css";

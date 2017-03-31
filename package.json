@@ -1,0 +1,30 @@
+{
+  "private": true,
+  "scripts": {
+    "dev": "node node_modules/cross-env/bin/cross-env.js NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "watch": "node node_modules/cross-env/bin/cross-env.js NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "watch-poll": "node node_modules/cross-env/bin/cross-env.js NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --watch-poll --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "hot": "node node_modules/cross-env/bin/cross-env.js NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "production": "node node_modules/cross-env/bin/cross-env.js NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+  },
+  "//": "最新版element-ui 1.2.1不支持total，必要可以把vue退到2.1.6，element-ui 1.1.6",
+  "devDependencies": {
+    "axios": "^0.15.3",
+    "bootstrap-sass": "^3.3.7",
+    "element-theme-default": "^1.2.1",
+    "element-ui": "^1.2.3",
+    "font-awesome": "^4.7.0",
+    "hotkeys-js": "^2.0.1",
+    "jquery": "^3.1.1",
+    "laravel-mix": "^0.8.1",
+    "localforage": "^1.5.0",
+    "lodash": "^4.17.4",
+    "marked": "^0.3.6",
+    "prismjs": "^1.6.0",
+    "vue": "^2.1.10",
+    "vue-axios": "^1.2.2",
+    "vue-cookie": "^1.1.3",
+    "vue-loader": "^11.1.3",
+    "vue-router": "^2.3.0"
+  }
+}

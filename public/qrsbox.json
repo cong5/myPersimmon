@@ -1,0 +1,12 @@
+{
+  "tasks": [
+    {
+      "name": "default",
+      "src": "./",
+      "dest": "qiniu:access_key=EcbyXQwNpeI3YMoYLDYbcTzvxIo7CfrqJbcbXQF6&secret_key=X65WsfgTQKw8CRbp-CcMb8e8OLr83MoGNpdgG1U1&bucket=cong5&key_prefix=assets/",
+      "deletable": 0,
+      "ignore_dir_structure": 0
+    }
+  ],
+  "debug_level": 0
+}
