@@ -4,11 +4,11 @@
 
 
 本项目使用 PHP 框架 [Laravel 5.4](https://doc.laravel-china.org/docs/5.4/) 进行开发。 
-项目依赖了部分云服务，如图片使用了七牛云储存。（目前必须，暂时没有加入本地存储图片的功能）   
+项目依赖了部分云服务，如图片使用了[七牛云储存](https://www.qiniu.com/)。（目前必须，暂时没有加入本地存储图片的功能）   
 文章别名自动生成，使用了百度翻译功能。（必须）
-接入了baidu ping服务，当发布文章的时候，自动向百度搜索引擎提交地址。（可以不使用） 
-后台有一个todo panel是调用了wunderlist的。（可以不使用） 
-系统后台使用了Vuejs + Element-UI实现前后端分离 
+接入了[百度ping](http://zhanzhang.baidu.com/linksubmit/index)服务，当发布文章的时候，自动向百度搜索引擎提交地址。（可以不使用） 
+后台有一个todo panel是调用了[wunderlist](https://www.wunderlist.com/)的。（可以不使用） 
+系统后台使用了[Vuejs 2.x](https://cn.vuejs.org/) + [Element-UI](http://element.eleme.io/)实现前后端分离 
 
 ## 项目概述
 
