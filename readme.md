@@ -110,7 +110,7 @@ npm run watch
 
 ### 前后台入口
 
-> 请修改 `.env` 文件为 `APP_ENV=local` 和 `APP_DEBUG=true` 。
+> 调试模式下，请修改 `.env` 文件为 `APP_ENV=local` 和 `APP_DEBUG=true` 。
 
 * 首页地址：http://example.com/
 * 管理后台：http://example.com/myp
@@ -131,6 +131,7 @@ MetaWeblog API（MWA）是一个Blog程序接口标准，允许外部程序来�
 
 ## License
 
-> 使用 MyPersimmon 构建，或者基于 MyPersimmon 源代码修改的站点 **必须** 在页脚加上 `Powered by Mr柿子` 字样，并且必须链接到 `https://cong5.net` 上。**必须** 在页面的每一个标题上加上 `Powered by Mr柿子` 字样。
+> 使用 MyPersimmon 构建，或者基于 MyPersimmon 源代码修改的站点 **必须** 在页脚加上 `Powered by Mr柿子` 字样，并且必须链接到 `https://cong5.net` 上。
 
 在遵守以上规则的情况下，你可以享受等同于 MIT 协议的授权。
+
