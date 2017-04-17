@@ -26,7 +26,7 @@
 
 ## 部署/安装
 
-需要再系统上安装了基本的PHP运行环境、PHP包管理工具composer、Nodejs进行前端资源打包
+需要在系统上安装了基本的PHP运行环境、PHP包管理工具composer、Nodejs进行前端资源打包
 
 ### 基础安装
 
@@ -61,10 +61,11 @@ BAIDU_PING_TOKEN=
 SERVER_CHAN=
 ```
 
-云服务AppKey和SecretKey申请地址：[七牛](http://www.qiniu.com/)   
+云服务AppKey和SecretKey申请地址：   
+[七牛](http://www.qiniu.com/)   
 [百度翻译](http://api.fanyi.baidu.com/api/trans/product/index)   
-[百度ping](http://zhanzhang.baidu.com/linksubmit/index)
-[Server酱](http://sc.ftqq.com/)
+[百度ping](http://zhanzhang.baidu.com/linksubmit/index)    
+[Server酱](http://sc.ftqq.com/)    
     
 #### 5. 执行数据库迁移
 
@@ -115,7 +116,7 @@ npm run watch
 
 ### 前后台入口
 
-> 请修改 `.env` 文件为 `APP_ENV=local` 和 `APP_DEBUG=true` 。
+> 如果要开启调试模式，请修改 `.env` 文件， `APP_ENV=local` 和 `APP_DEBUG=true` 。
 
 * 首页地址：http://example.com/
 * 管理后台：http://example.com/myp
