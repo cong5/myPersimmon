@@ -17,7 +17,7 @@ class CreateOptionsTable extends Migration
             $table->increments('id');
             $table->string('option_title')->nullable();
             $table->string('option_name')->nullable();
-            $table->string('option_value')->nullable();
+            $table->text('option_value')->nullable();
             $table->string('option_group')->nullable();
             $table->string('option_remark')->nullable();
             $table->enum('option_status', ['base','extends','hidden'])->default('extends');

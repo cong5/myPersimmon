@@ -1,14 +1,14 @@
 ## MyPersimmon
 
-![macbook](https://raw.githubusercontent.com/Cong5/myPersimmon/master/public/images/screen.jpg)
+![macbook](https://cloud.githubusercontent.com/assets/324764/18414545/d875e012-77ff-11e6-9249-0b56a6460cb8.png)
 
 
 本项目使用 PHP 框架 [Laravel 5.4](https://doc.laravel-china.org/docs/5.4/) 进行开发。 
-项目依赖了部分云服务，如图片使用了[七牛云储存](https://www.qiniu.com/)。（目前必须，暂时没有加入本地存储图片的功能）   
+项目依赖了部分云服务，如图片使用了七牛云储存。（目前必须，暂时没有加入本地存储图片的功能）   
 文章别名自动生成，使用了百度翻译功能。（必须）
-接入了[百度ping](http://zhanzhang.baidu.com/linksubmit/index)服务，当发布文章的时候，自动向百度搜索引擎提交地址。（可以不使用） 
-后台有一个todo panel是调用了[wunderlist](https://www.wunderlist.com/)的。（可以不使用） 
-系统后台使用了[Vuejs 2.x](https://cn.vuejs.org/) + [Element-UI](http://element.eleme.io/)实现前后端分离 
+接入了baidu ping服务，当发布文章的时候，自动向百度搜索引擎提交地址。（可以不使用） 
+后台有一个todo panel是调用了wunderlist的。（可以不使用） 
+系统后台使用了Vuejs + Element-UI实现前后端分离 
 
 ## 项目概述
 
@@ -57,17 +57,22 @@ BAIDU_TRANSLATE_SK=
 #百度ping
 BAIDU_PING_SITE=
 BAIDU_PING_TOKEN=
+#错误信息推送到微信
+SERVER_CHAN=
 ```
 
-云服务AppKey和SecretKey申请地址：[七牛](http://www.qiniu.com/)、[百度翻译](http://api.fanyi.baidu.com/api/trans/product/index)、[百度ping](http://zhanzhang.baidu.com/linksubmit/index)
+云服务AppKey和SecretKey申请地址：[七牛](http://www.qiniu.com/)   
+[百度翻译](http://api.fanyi.baidu.com/api/trans/product/index)   
+[百度ping](http://zhanzhang.baidu.com/linksubmit/index)
+[Server酱](http://sc.ftqq.com/)
     
-#### 5. 数据库迁移 Migrations
+#### 5. 执行数据库迁移
 
 ```shell
 php artisan migrate
 ```
 
-#### 6. 填充初始数据Seeder
+#### 6. 填充初始数据
 
 ```shell
 php artisan db:seed
@@ -110,7 +115,7 @@ npm run watch
 
 ### 前后台入口
 
-> 调试模式下，请修改 `.env` 文件为 `APP_ENV=local` 和 `APP_DEBUG=true` 。
+> 请修改 `.env` 文件为 `APP_ENV=local` 和 `APP_DEBUG=true` 。
 
 * 首页地址：http://example.com/
 * 管理后台：http://example.com/myp
@@ -121,17 +126,8 @@ npm run watch
 至此, 安装完成。
 
 
-### MyPersimmon 博客支持Metaweblog API
-
-接口地址：http://example.com/xmlrpc
-
-什么是MetaWeblog API？
-
-MetaWeblog API（MWA）是一个Blog程序接口标准，允许外部程序来获取或者设置Blog的文字和熟悉。他建立在XMLRPC接口之上，并且已经有了很多的实现。
-
 ## License
 
-> 使用 MyPersimmon 构建，或者基于 MyPersimmon 源代码修改的站点 **必须** 在页脚加上 `Powered by Mr柿子` 字样，并且必须链接到 `https://cong5.net` 上。
+> 使用 MyPersimmon 构建，或者基于 MyPersimmon 源代码修改的站点 **必须** 在页脚加上 `Powered by Mr柿子` 字样，并且必须链接到 `https://cong5.net` 上。**必须** 在页面的每一个标题上加上 `Powered by Mr柿子` 字样。
 
 在遵守以上规则的情况下，你可以享受等同于 MIT 协议的授权。
-
