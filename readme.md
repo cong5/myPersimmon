@@ -128,6 +128,6 @@ npm run watch
 
 ## License
 
-> 使用 MyPersimmon 构建，或者基于 MyPersimmon 源代码修改的站点 **必须** 在页脚加上 `Powered by Mr柿子` 字样，并且必须链接到 `https://cong5.net` 上。**必须** 在页面的每一个标题上加上 `Powered by Mr柿子` 字样。
+> 使用 MyPersimmon 构建，或者基于 MyPersimmon 源代码修改的站点 **必须** 在页脚加上 `Powered by Mr柿子` 字样，并且必须链接到 `https://cong5.net` 上。
 
 在遵守以上规则的情况下，你可以享受等同于 MIT 协议的授权。
