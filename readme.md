@@ -10,6 +10,24 @@
 后台有一个todo panel是调用了wunderlist的。（可以不使用） 
 系统后台使用了Vuejs + Element-UI实现前后端分离 
 
+
+### 博客功能具有以下功能
+
+- 分类管理
+- 文章管理
+- 标签管理
+- 评论管理
+- 导航管理
+- Redis 缓存
+- 好用的 Simplemde Markdown 编辑器
+- myPersimmon博客分类、文章都支持自定义URL
+- 支持Metaweblog API，接口地址：http://example.com/xmlrpc ，可以方便的使用离线发布工具写博客，比如我就喜欢使用Mweb写博客，然后通过Metaweblog API发布。
+
+更多功能欢迎大家自己挖掘，或者有好的意见和建议欢迎拍砖。
+
+求 Star,求 Star,求 Star 。
+
+
 ## 项目概述
 
 * 项目名称：MyPersimmon
