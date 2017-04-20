@@ -37,10 +37,4 @@ class DashboardController extends Controller
         return response()->json($response);
     }
 
-    public function shanbay(Shanbay $shanbay)
-    {
-        $state = $shanbay->getState();
-        dump($state);
-    }
-
 }

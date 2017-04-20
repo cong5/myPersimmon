@@ -42,7 +42,7 @@ class SettingsController extends Controller
             $model->save();
             unset($model);
         }
-        cache()->forget('options');
+        app(\Persimmon\Services\RedisCache::class)->updateSetting();
         return response()->json(['status' => 'success']);
     }
 

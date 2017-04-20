@@ -183,7 +183,7 @@
                     //type: 'warning'
                 }).then(() => {
                     _this.listLoading = true;
-                    _this.axios.delete('/posts/destroy', {data: idsParam}).then(function (response) {
+                    _this.axios.delete('/trash/destroy', {data: idsParam}).then(function (response) {
                         _this.listLoading = false;
                         let res = response.data;
                         _this.$message({

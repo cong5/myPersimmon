@@ -94,7 +94,7 @@ class PostsController extends Controller implements CreatorInterface
         $this->validate($request, [
             'ids' => 'required'
         ]);
-        $result = Posts::whereIn('id', $request->ids)->update(['deleted_at' => time()]);
+        $result = Posts::whereIn('id', $request->ids)->delete();
         return response()->json(['status' => !$result ? 'error' : 'success']);
     }
 

@@ -11,8 +11,8 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Models\Posts;
+use Models\PostsTags;
 
 class TrashController extends Controller
 {
@@ -57,7 +57,8 @@ class TrashController extends Controller
         $this->validate($request, [
             'ids' => 'required'
         ]);
-        $result = Posts::whereIn('id', $request->ids)->delete();
+        $result = Posts::whereIn('id', $request->ids)->forceDelete();
+        PostsTags::whereIn('posts_id', $request->ids)->delete();
         return response()->json(['status' => !$result ? 'error' : 'success']);
     }
 

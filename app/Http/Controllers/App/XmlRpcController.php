@@ -305,12 +305,13 @@ class XmlRpcController extends Controller implements CreatorInterface,XmlRpcInte
      */
     private function transform($struct)
     {
+        $tags = strpos($struct['mt_keywords'], ',') !== false ? explode(',', $struct['mt_keywords']) : $struct['mt_keywords'];
         $category = Categorys::where('category_name', $struct['categories'][0])->select('id')->first();
         $request = new Request();
         $request->title = $struct['title'];
         $request->flag = $struct['wp_slug'];
         $request->thumb = '';
-        $request->tags = is_array($struct['mt_keywords']) ? $struct['mt_keywords'] : [$struct['mt_keywords']];
+        $request->tags = is_array($struct['mt_keywords']) ? $struct['mt_keywords'] : $tags;
         $request->category_id = $category->id;
         $request->user_id = Auth::id();
         $request->markdown = $struct['description'];

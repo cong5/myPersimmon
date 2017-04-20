@@ -42,9 +42,6 @@ Route::group(['prefix' => 'myp', 'namespace' => 'Backend'], function () {
 
 Route::group(['prefix' => 'myp', 'middleware' => 'auth', 'namespace' => 'Backend'], function () {
     Route::get('/dashboard/meta', 'DashboardController@meta');
-    Route::get('/dashboard/shanbay', 'DashboardController@shanbay');
-    Route::get('/wunderlist/callback', 'WunderlistControler@callback')->name('wunderlist_callback');
-    Route::get('/wunderlist', 'WunderlistControler@index')->name('wunderlist');
     Route::resource('/categorys', 'CategorysController');
     Route::resource('/posts', 'PostsController');
     Route::resource('/tags', 'TagsController');
