@@ -32,6 +32,7 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
+        app(\Persimmon\Services\ServerChanSend::class)->send($exception);
         parent::report($exception);
     }
 

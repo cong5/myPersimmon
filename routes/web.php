@@ -24,9 +24,9 @@ Route::group(['namespace' => 'App'], function () {
     Route::get('/sitemap.xml', 'HomeController@siteMap');
     Route::get('/xmlrpc', 'XmlRpcController@errorMessage');
     Route::post('/xmlrpc', 'XmlRpcController@index')->name('xmlrpc');
-    Route::get('/debug', 'HomeController@debug')->name('debug');
+    Route::get('/friends', 'HomeController@friends')->name('friends');
     Route::resource('/comment', 'CommentController');
-    Route::get('/google', 'ServicesController@index')->name('index');
+    Route::get('/debug', 'HomeController@debug')->name('debug');
 });
 
 /**
@@ -42,6 +42,7 @@ Route::group(['prefix' => 'myp', 'namespace' => 'Backend'], function () {
 
 Route::group(['prefix' => 'myp', 'middleware' => 'auth', 'namespace' => 'Backend'], function () {
     Route::get('/dashboard/meta', 'DashboardController@meta');
+    Route::get('/dashboard/shanbay', 'DashboardController@shanbay');
     Route::resource('/categorys', 'CategorysController');
     Route::resource('/posts', 'PostsController');
     Route::resource('/tags', 'TagsController');
@@ -55,12 +56,4 @@ Route::group(['prefix' => 'myp', 'middleware' => 'auth', 'namespace' => 'Backend
     Route::resource('/comments', 'CommentController');
     Route::resource('/trash', 'TrashController');
 });
-
-
-Route::group(['prefix' => 'thrids', 'namespace' => 'ThridService'], function () {
-    Route::get('/shanbay', 'ShanbayController@login')->name('shanbay');
-    Route::get('/jxoa', 'JxoaController@index')->name('jxoa');
-
-});
-
 

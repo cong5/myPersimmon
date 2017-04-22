@@ -16,7 +16,7 @@
     <meta name="keywords" content="{{ bloginfo('keywords') }}" />
     <meta name="description" content="{{ bloginfo('description') }}" />
     <link href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}?v=20170308"/>
+    <link rel="stylesheet" href="{{ mix('css/app.css') }}"/>
     <!--[if lt IE 9]>
     <script src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\App;
 
 
+use Models\Links;
 use Persimmon\Interfaces\CreatorInterface;
 use App\Http\Controllers\Controller;
 use Persimmon\Services\SiteMap;
@@ -19,6 +20,7 @@ class HomeController extends Controller implements CreatorInterface
     public function __construct()
     {
     }
+
     /**
      * Show the application dashboard.
      *
@@ -33,11 +35,10 @@ class HomeController extends Controller implements CreatorInterface
 
     public function posts($flag)
     {
-        $post = Posts::OfType('post')->where('flag', $flag)->first();
-        $post->categories;
-        $post->tags;
-        $post->user;
-        $post->increment('views', 1);
+        $post = app(\Persimmon\Services\RedisCache::class)->cachePost($flag);
+
+        Posts::increment('views', 1);
+
         return view('app.post')->with(compact('post'));
     }
 
@@ -68,6 +69,16 @@ class HomeController extends Controller implements CreatorInterface
         $posts = $category->posts()->paginate(15);
 
         return view('app.home')->with(compact('posts', 'category'));
+    }
+
+    /**
+     * friends links
+     * @return $this
+     */
+    public function friends()
+    {
+        $links = Links::all();
+        return view('app.friends')->with(compact('links'));
     }
 
     /**
@@ -113,6 +124,7 @@ class HomeController extends Controller implements CreatorInterface
 
     public function debug()
     {
+        //abc::findOrFail(100);
         //die('bala,bala,bala~~~');
     }
 }
