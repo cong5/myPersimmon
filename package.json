@@ -12,7 +12,7 @@
     "axios": "^0.15.3",
     "bootstrap-sass": "^3.3.7",
     "element-theme-default": "^1.2.1",
-    "element-ui": "^1.2.3",
+    "element-ui": "^1.2.9",
     "font-awesome": "^4.7.0",
     "hotkeys-js": "^2.0.1",
     "jquery": "^3.1.1",
@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "simplemde": "^1.11.2",
+    "vue-i18n": "^6.1.1",
     "vuedraggable": "^2.10.0"
   }
 }

@@ -78,7 +78,7 @@ class XmlRpcController extends Controller implements CreatorInterface,XmlRpcInte
     }
 
     /**
-     * Get 请求
+     * Get Request Show Error Message
      */
     public function errorMessage()
     {
@@ -86,7 +86,7 @@ class XmlRpcController extends Controller implements CreatorInterface,XmlRpcInte
     }
 
     /**
-     * 观察者方法，操作失败调用
+     * Observer creator Fail
      * @param $error
      */
     public function creatorFail($error)
@@ -99,7 +99,7 @@ class XmlRpcController extends Controller implements CreatorInterface,XmlRpcInte
     }
 
     /**
-     * 观察者方法，操作成功调用
+     * Observer creator Success
      * @param $model
      */
     public function creatorSuccess($model)
@@ -108,7 +108,7 @@ class XmlRpcController extends Controller implements CreatorInterface,XmlRpcInte
     }
 
     /**
-     * 登录验证
+     * authenticate
      * @param $email
      * @param $password
      * @return bool
@@ -151,7 +151,7 @@ class XmlRpcController extends Controller implements CreatorInterface,XmlRpcInte
     }
 
     /**
-     * 获取博客基本信息，验证接口
+     * Get Blogs Info
      * @param $method
      * @param $params
      */
@@ -166,7 +166,7 @@ class XmlRpcController extends Controller implements CreatorInterface,XmlRpcInte
     }
 
     /**
-     * 编辑文章
+     * edit Post
      * @param $method
      * @param $params
      */
@@ -178,7 +178,7 @@ class XmlRpcController extends Controller implements CreatorInterface,XmlRpcInte
     }
 
     /**
-     * 获取分类列表
+     * Get Categories
      * @param $method
      * @param $params
      */
@@ -189,7 +189,7 @@ class XmlRpcController extends Controller implements CreatorInterface,XmlRpcInte
     }
 
     /**
-     * 获取一篇文章
+     * Get Post
      * @param $method
      * @param $params
      */
@@ -211,7 +211,7 @@ class XmlRpcController extends Controller implements CreatorInterface,XmlRpcInte
     }
 
     /**
-     * 获取指定篇数的最新文章
+     * Get Recent Posts
      * @param $method
      * @param $params
      */
@@ -236,7 +236,7 @@ class XmlRpcController extends Controller implements CreatorInterface,XmlRpcInte
     }
 
     /**
-     * 上传媒体文件
+     * Upload new Media Object
      * @param $method
      * @param $params
      */
@@ -250,7 +250,7 @@ class XmlRpcController extends Controller implements CreatorInterface,XmlRpcInte
     }
 
     /**
-     * 创建新的文章
+     * Create new Post
      * @param $method
      * @param $params
      */
@@ -262,7 +262,7 @@ class XmlRpcController extends Controller implements CreatorInterface,XmlRpcInte
     }
 
     /**
-     * 创建新的分类
+     * Create new Category
      * @param $method
      * @param $params
      */
@@ -274,7 +274,7 @@ class XmlRpcController extends Controller implements CreatorInterface,XmlRpcInte
     }
 
     /**
-     * 删除博文
+     * delete Post
      * @param $method
      * @param $params
      */
@@ -286,7 +286,7 @@ class XmlRpcController extends Controller implements CreatorInterface,XmlRpcInte
     }
 
     /**
-     * 没有找到实例方法
+     * method Not Found
      * @param $methodName
      */
     protected function methodNotFound($methodName)
@@ -299,7 +299,7 @@ class XmlRpcController extends Controller implements CreatorInterface,XmlRpcInte
     }
 
     /**
-     * 数据转换
+     * transform data
      * @param $struct
      * @return Request
      */
