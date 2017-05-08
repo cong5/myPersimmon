@@ -33,8 +33,8 @@
             <div class="clear"></div>
         </footer>
     </article>
-    {{ $posts->links('app.partials.pager') }}
     @endforeach
+    {{ $posts->links('app.partials.pager') }}
 @endsection
 
 @section('footer')
