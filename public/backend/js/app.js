@@ -387,7 +387,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-exports.warning = warning;
 exports.format = format;
 exports.isEmptyValue = isEmptyValue;
 exports.isEmptyObject = isEmptyObject;
@@ -396,23 +395,19 @@ exports.complementError = complementError;
 exports.deepMerge = deepMerge;
 var formatRegExp = /%[sdj%]/g;
 
-var warning2 = function warning2() {};
+var warning = exports.warning = function warning() {};
 
-if (process.env.NODE_ENV !== 'production') {
-  warning2 = function warning2(type, message) {
+// don't print warning message when in production env or node runtime
+if (process.env.NODE_ENV !== 'production' && typeof window !== 'undefined' && typeof document !== 'undefined') {
+  exports.warning = warning = function warning(type, errors) {
     if (typeof console !== 'undefined' && console.warn) {
-      console.warn(type, message);
+      if (errors.every(function (e) {
+        return typeof e === 'string';
+      })) {
+        console.warn(type, errors);
+      }
     }
   };
-}
-
-function warning(type, errors) {
-  // only warn native warning, default type is string, confuses many people...
-  if (errors.every(function (e) {
-    return typeof e === 'string';
-  })) {
-    warning2(type, errors);
-  }
 }
 
 function format() {
@@ -16330,7 +16325,8 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 /* eslint max-len:0 */
 
 var pattern = {
-  email: /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/,
+  // http://emailregex.com/
+  email: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
   url: new RegExp('^(?!mailto:)(?:(?:http|https|ftp)://|//)(?:\\S+(?::\\S*)?@)?(?:(?:(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}(?:\\.(?:[0-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))|(?:(?:[a-z\\u00a1-\\uffff0-9]+-?)*[a-z\\u00a1-\\uffff0-9]+)(?:\\.(?:[a-z\\u00a1-\\uffff0-9]+-?)*[a-z\\u00a1-\\uffff0-9]+)*(?:\\.(?:[a-z\\u00a1-\\uffff]{2,})))|localhost)(?::\\d{2,5})?(?:(/|\\?|#)[^\\s]*)?$', 'i'),
   hex: /^#?([a-f0-9]{6}|[a-f0-9]{3})$/i
 };
@@ -18468,113 +18464,47 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-	data: function data() {
-		return {
-			statisticalLoading: false,
-			recentLoading: false,
-			statisticalNames: ['1', '2'],
-			recentNames: ['1'],
-			shanbayAuth: false,
-			shanbay: [],
-			wunderlistAuth: false,
-			wunderlistAuthUrl: '',
-			wunderlists: [],
-			statistical: {
-				posts: 0,
-				comments: 0,
-				post_trash: 0,
-				recent_posts: []
-			}
-		};
-	},
-	created: function created() {
-		this.getMeta();
-		this.getWunderlist();
-		this.getShanbay();
-	},
+    data: function data() {
+        return {
+            statisticalLoading: false,
+            recentLoading: false,
+            statisticalNames: ['1', '2'],
+            recentNames: ['1'],
+            statistical: {
+                posts: 0,
+                comments: 0,
+                post_trash: 0,
+                recent_posts: []
+            }
+        };
+    },
+    created: function created() {
+        this.getMeta();
+    },
 
-	methods: {
-		getMeta: function getMeta() {
-			var _this = this;
-			_this.statisticalLoading = true;
-			_this.axios.get('/dashboard/meta').then(function (response) {
-				var res = response.data;
-				if (res != false) {
-					_this.statistical = res;
-				} else {
-					_this.$message({
-						message: '数据获取失败',
-						type: 'error'
-					});
-				}
-				_this.statisticalLoading = false;
-			}).catch(function (error) {
-				console.log(error);
-				_this.statisticalLoading = false;
-			});
-		},
-		getWunderlist: function getWunderlist() {
-			var _this = this;
-			_this.todoLoading = true;
-			_this.axios.get('/wunderlist').then(function (response) {
-				var res = response.data;
-				if (res == false) {
-					_this.$message({
-						message: '数据获取失败',
-						type: 'error'
-					});
-				}
-				if (res.auth == 'Unauthenticated') {
-					_this.wunderlistAuth = true;
-					_this.wunderlistAuthUrl = res.authUrl;
-				}
-
-				if (res.status) {
-					_this.wunderlists = res.todo;
-				}
-
-				_this.todoLoading = false;
-			}).catch(function (error) {
-				console.log(error);
-				_this.todoLoading = false;
-			});
-		},
-		authWunderlist: function authWunderlist() {
-			var winObj = this.openWin(this.wunderlistAuthUrl, 'Wunderlist 登录授权', 850, 450);
-			var loop = setInterval(function () {
-				if (winObj.closed) {
-					clearInterval(loop);
-					this.getWunderlist();
-				}
-			}, 1000);
-		},
-		getShanbay: function getShanbay() {},
-		openWin: function openWin(url, name, iWidth, iHeight) {
-			//获得窗口的垂直位置
-			var iTop = (window.screen.availHeight - 30 - iHeight) / 2;
-			//获得窗口的水平位置
-			var iLeft = (window.screen.availWidth - 10 - iWidth) / 2;
-			return window.open(url, name, 'height=' + iHeight + ',innerHeight=' + iHeight + ',width=' + iWidth + ',innerWidth=' + iWidth + ',top=' + iTop + ',left=' + iLeft + ',status=no,toolbar=no,menubar=no,location=no,resizable=no,scrollbars=0,titlebar=no');
-		}
-	}
+    methods: {
+        getMeta: function getMeta() {
+            var _this = this;
+            _this.statisticalLoading = true;
+            _this.axios.get('/dashboard/meta').then(function (response) {
+                var res = response.data;
+                if (res != false) {
+                    _this.statistical = res;
+                } else {
+                    _this.$message({
+                        message: '数据获取失败',
+                        type: 'error'
+                    });
+                }
+                _this.statisticalLoading = false;
+            }).catch(function (error) {
+                console.log(error);
+                _this.statisticalLoading = false;
+            });
+        }
+    }
 });
 
 /***/ }),
@@ -20323,7 +20253,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 //type: 'warning'
             }).then(function () {
                 _this.listLoading = true;
-                _this.axios.delete('/posts/destroy', { data: idsParam }).then(function (response) {
+                _this.axios.delete('/trash/destroy', { data: idsParam }).then(function (response) {
                     _this.listLoading = false;
                     var res = response.data;
                     _this.$message({
@@ -22861,7 +22791,7 @@ module.exports =
 	};
 
 	module.exports = {
-	  version: '1.2.8',
+	  version: '1.2.9',
 	  locale: _locale2.default.use,
 	  i18n: _locale2.default.i18n,
 	  install: install,
@@ -26759,6 +26689,7 @@ module.exports =
 	      return {
 	        backgroundColor: this._radioGroup.fill || '',
 	        borderColor: this._radioGroup.fill || '',
+	        boxShadow: this._radioGroup.fill ? '-1px 0 0 0 ' + this._radioGroup.fill : '',
 	        color: this._radioGroup.textColor || ''
 	      };
 	    },
@@ -28078,6 +28009,9 @@ module.exports =
 	        return;
 	      }
 	      if (this.options.length === 0 || this.filteredOptionsCount === 0) return;
+	      this.optionsAllDisabled = this.options.length === this.options.filter(function (item) {
+	        return item.disabled === true;
+	      }).length;
 	      if (!this.optionsAllDisabled) {
 	        if (direction === 'next') {
 	          this.hoverIndex++;
@@ -30678,11 +30612,16 @@ module.exports =
 	        tooltip.referenceElm = cell;
 	        tooltip.$refs.popper.style.display = 'none';
 	        tooltip.doDestroy();
+	        tooltip.setExpectedState(true);
 	        this.activateTooltip(tooltip);
 	      }
 	    },
 	    handleCellMouseLeave: function handleCellMouseLeave(event) {
-	      this.$refs.tooltip.handleClosePopper();
+	      var tooltip = this.$refs.tooltip;
+	      if (tooltip) {
+	        tooltip.setExpectedState(false);
+	        tooltip.handleClosePopper();
+	      }
 	      var cell = (0, _util.getCell)(event);
 	      if (!cell) return;
 
@@ -32693,6 +32632,7 @@ module.exports =
 	            this.picker.value = parsedValue;
 	          }
 	        } else {
+	          this.$emit('input', value);
 	          this.picker.value = value;
 	        }
 	        this.$forceUpdate();
@@ -32819,7 +32759,8 @@ module.exports =
 	          _this.picker.resetView && _this.picker.resetView();
 
 	          _this.picker.$on('dodestroy', _this.doDestroy);
-	          _this.picker.$on('pick', function (date) {
+	          _this.picker.$on('pick', function () {
+	            var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
 	            var visible = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
 	            _this.$emit('input', date);
@@ -36990,6 +36931,10 @@ module.exports =
 	          gpuAcceleration: false
 	        };
 	      }
+	    },
+	    enterable: {
+	      type: Boolean,
+	      default: true
 	    }
 	  },
 
@@ -37028,9 +36973,11 @@ module.exports =
 	          {
 	            on: {
 	              'mouseleave': function mouseleave() {
-	                _this2.debounceClose();_this2.togglePreventClose();
+	                _this2.setExpectedState(false);_this2.debounceClose();
 	              },
-	              'mouseenter': this.togglePreventClose
+	              'mouseenter': function mouseenter() {
+	                _this2.setExpectedState(true);
+	              }
 	            },
 
 	            ref: 'popper',
@@ -37052,8 +36999,12 @@ module.exports =
 	    var data = vnode.data = vnode.data || {};
 	    var on = vnode.data.on = vnode.data.on || {};
 
-	    on.mouseenter = this.addEventHandle(on.mouseenter, this.handleShowPopper);
-	    on.mouseleave = this.addEventHandle(on.mouseleave, this.debounceClose);
+	    on.mouseenter = this.addEventHandle(on.mouseenter, function () {
+	      _this2.setExpectedState(true);_this2.handleShowPopper();
+	    });
+	    on.mouseleave = this.addEventHandle(on.mouseleave, function () {
+	      _this2.setExpectedState(false);_this2.debounceClose();
+	    });
 	    data.staticClass = this.concatClass(data.staticClass, 'el-tooltip');
 
 	    return vnode;
@@ -37074,19 +37025,19 @@ module.exports =
 	    handleShowPopper: function handleShowPopper() {
 	      var _this3 = this;
 
-	      if (this.manual) return;
+	      if (!this.expectedState || this.manual) return;
 	      clearTimeout(this.timeout);
 	      this.timeout = setTimeout(function () {
 	        _this3.showPopper = true;
 	      }, this.openDelay);
 	    },
 	    handleClosePopper: function handleClosePopper() {
-	      if (this.preventClose || this.manual) return;
+	      if (this.enterable && this.expectedState || this.manual) return;
 	      clearTimeout(this.timeout);
 	      this.showPopper = false;
 	    },
-	    togglePreventClose: function togglePreventClose() {
-	      this.preventClose = !this.preventClose;
+	    setExpectedState: function setExpectedState(expectedState) {
+	      this.expectedState = expectedState;
 	    }
 	  }
 	};
@@ -38499,6 +38450,7 @@ module.exports =
 	      this.$emit('tab-click', tab, event);
 	    },
 	    handleTabRemove: function handleTabRemove(pane, ev) {
+	      if (pane.disabled) return;
 	      ev.stopPropagation();
 	      this.$emit('edit', pane.name, 'remove');
 	      this.$emit('tab-remove', pane.name);
@@ -39593,7 +39545,7 @@ module.exports =
 
 	    var allNodes = this._getAllNodes();
 	    allNodes.sort(function (a, b) {
-	      return a.level < b.level;
+	      return b.level - a.level;
 	    });
 
 	    var keys = Object.keys(checkedKeys);
@@ -40853,6 +40805,7 @@ module.exports =
 	//
 	//
 	//
+	//
 
 	var typeMap = {
 	  success: 'circle-check',
@@ -40872,6 +40825,7 @@ module.exports =
 	      customClass: '',
 	      iconClass: '',
 	      onClose: null,
+	      onClick: null,
 	      closed: false,
 	      top: null,
 	      timer: null
@@ -40899,6 +40853,11 @@ module.exports =
 	      this.$el.removeEventListener('transitionend', this.destroyElement);
 	      this.$destroy(true);
 	      this.$el.parentNode.removeChild(this.$el);
+	    },
+	    click: function click() {
+	      if (typeof this.onClick === 'function') {
+	        this.onClick();
+	      }
 	    },
 	    close: function close() {
 	      this.closed = true;
@@ -40962,7 +40921,8 @@ module.exports =
 	      },
 	      "mouseleave": function($event) {
 	        _vm.startTimer()
-	      }
+	      },
+	      "click": _vm.click
 	    }
 	  }, [(_vm.type || _vm.iconClass) ? _c('i', {
 	    staticClass: "el-notification__icon",
@@ -40982,7 +40942,10 @@ module.exports =
 	  }, [_vm._t("default", [_vm._v(_vm._s(_vm.message))])], 2), _c('div', {
 	    staticClass: "el-notification__closeBtn el-icon-close",
 	    on: {
-	      "click": _vm.close
+	      "click": function($event) {
+	        $event.stopPropagation();
+	        _vm.close($event)
+	      }
 	    }
 	  })])])])
 	},staticRenderFns: []}
@@ -42722,6 +42685,8 @@ module.exports =
 	//
 	//
 	//
+	//
+	//
 
 	exports.default = {
 	  mixins: [_locale2.default],
@@ -42785,19 +42750,13 @@ module.exports =
 	    }, [_c('i', {
 	      staticClass: "el-icon-document"
 	    }), _vm._v(_vm._s(file.name) + "\n    ")]), _c('label', {
-	      directives: [{
-	        name: "show",
-	        rawName: "v-show",
-	        value: (file.status === 'success'),
-	        expression: "file.status === 'success'"
-	      }],
 	      staticClass: "el-upload-list__item-status-label"
-	    }, [_c('i', {
+	    }, [(file.status === 'success') ? _c('i', {
 	      class: {
 	        'el-icon-circle-check': _vm.listType === 'text',
 	          'el-icon-check': ['picture-card', 'picture'].indexOf(_vm.listType) > -1
 	      }
-	    }), _c('i', {
+	    }) : _vm._e(), _c('i', {
 	      staticClass: "el-icon-close",
 	      on: {
 	        "click": function($event) {
@@ -42934,7 +42893,6 @@ module.exports =
 
 	      if (!files) return;
 	      this.uploadFiles(files);
-	      this.$refs.input.value = null;
 	    },
 	    uploadFiles: function uploadFiles(files) {
 	      var _this = this;
@@ -43010,6 +42968,7 @@ module.exports =
 	  render: function render(h) {
 	    var handleClick = this.handleClick,
 	        drag = this.drag,
+	        name = this.name,
 	        handleChange = this.handleChange,
 	        multiple = this.multiple,
 	        accept = this.accept,
@@ -43038,7 +42997,7 @@ module.exports =
 	        [this.$slots.default]
 	      ) : this.$slots.default, h(
 	        'input',
-	        { 'class': 'el-upload__input', attrs: { type: 'file', multiple: multiple, accept: accept },
+	        { 'class': 'el-upload__input', attrs: { type: 'file', name: name, multiple: multiple, accept: accept },
 	          ref: 'input', on: {
 	            'change': handleChange
 	          }
@@ -50625,6 +50584,9 @@ module.exports =
 	        return;
 	      }
 	      if (this.options.length === 0 || this.filteredOptionsCount === 0) return;
+	      this.optionsAllDisabled = this.options.length === this.options.filter(function (item) {
+	        return item.disabled === true;
+	      }).length;
 	      if (!this.optionsAllDisabled) {
 	        if (direction === 'next') {
 	          this.hoverIndex++;
@@ -51230,6 +51192,10 @@ module.exports =
 	          gpuAcceleration: false
 	        };
 	      }
+	    },
+	    enterable: {
+	      type: Boolean,
+	      default: true
 	    }
 	  },
 
@@ -51268,9 +51234,11 @@ module.exports =
 	          {
 	            on: {
 	              'mouseleave': function mouseleave() {
-	                _this2.debounceClose();_this2.togglePreventClose();
+	                _this2.setExpectedState(false);_this2.debounceClose();
 	              },
-	              'mouseenter': this.togglePreventClose
+	              'mouseenter': function mouseenter() {
+	                _this2.setExpectedState(true);
+	              }
 	            },
 
 	            ref: 'popper',
@@ -51292,8 +51260,12 @@ module.exports =
 	    var data = vnode.data = vnode.data || {};
 	    var on = vnode.data.on = vnode.data.on || {};
 
-	    on.mouseenter = this.addEventHandle(on.mouseenter, this.handleShowPopper);
-	    on.mouseleave = this.addEventHandle(on.mouseleave, this.debounceClose);
+	    on.mouseenter = this.addEventHandle(on.mouseenter, function () {
+	      _this2.setExpectedState(true);_this2.handleShowPopper();
+	    });
+	    on.mouseleave = this.addEventHandle(on.mouseleave, function () {
+	      _this2.setExpectedState(false);_this2.debounceClose();
+	    });
 	    data.staticClass = this.concatClass(data.staticClass, 'el-tooltip');
 
 	    return vnode;
@@ -51314,19 +51286,19 @@ module.exports =
 	    handleShowPopper: function handleShowPopper() {
 	      var _this3 = this;
 
-	      if (this.manual) return;
+	      if (!this.expectedState || this.manual) return;
 	      clearTimeout(this.timeout);
 	      this.timeout = setTimeout(function () {
 	        _this3.showPopper = true;
 	      }, this.openDelay);
 	    },
 	    handleClosePopper: function handleClosePopper() {
-	      if (this.preventClose || this.manual) return;
+	      if (this.enterable && this.expectedState || this.manual) return;
 	      clearTimeout(this.timeout);
 	      this.showPopper = false;
 	    },
-	    togglePreventClose: function togglePreventClose() {
-	      this.preventClose = !this.preventClose;
+	    setExpectedState: function setExpectedState(expectedState) {
+	      this.expectedState = expectedState;
 	    }
 	  }
 	};
@@ -74158,40 +74130,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "aria-hidden": "true"
     }
-  }), _vm._v(" 评论：" + _vm._s(_vm.statistical.comments) + " 条")])])])], 2), _vm._v(" "), _c('el-collapse-item', {
-    attrs: {
-      "name": "2"
-    }
-  }, [_c('template', {
-    slot: "title"
-  }, [_vm._v("Todo")]), _vm._v(" "), _c('div', {
-    directives: [{
-      name: "loading",
-      rawName: "v-loading",
-      value: (_vm.todoLoading),
-      expression: "todoLoading"
-    }],
-    staticClass: "collapse-content"
-  }, [(_vm.shanbayAuth) ? _c('div', {
-    staticClass: "wunderlist-auth"
-  }, [_c('el-button', {
-    attrs: {
-      "type": "info"
-    },
-    on: {
-      "click": _vm.authWunderlist
-    }
-  }, [_vm._v("wunderlist 登录授权")])], 1) : _vm._e(), _vm._v(" "), _c('div', {
-    staticClass: "todo-list"
-  }, [_c('ul', _vm._l((_vm.wunderlists), function(todo) {
-    return _c('li', {
-      attrs: {
-        "data-id": todo.id
-      }
-    }, [_c('el-checkbox', [_vm._v(" " + _vm._s(todo.title))]), _vm._v(" "), _c('span', {
-      staticClass: "todo-date"
-    }, [_vm._v(_vm._s(todo.due_date))])], 1)
-  }))])])], 2)], 1)], 1)]), _vm._v(" "), _c('el-col', {
+  }), _vm._v(" 评论：" + _vm._s(_vm.statistical.comments) + " 条")])])])], 2)], 1)], 1)]), _vm._v(" "), _c('el-col', {
     attrs: {
       "span": 12
     }
@@ -75957,7 +75896,7 @@ if (false) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {/**
-  * vue-router v2.4.0
+  * vue-router v2.5.2
   * (c) 2017 Evan You
   * @license MIT
   */
@@ -75984,7 +75923,7 @@ var View = {
       default: 'default'
     }
   },
-  render: function render (h, ref) {
+  render: function render (_, ref) {
     var props = ref.props;
     var children = ref.children;
     var parent = ref.parent;
@@ -75992,6 +75931,9 @@ var View = {
 
     data.routerView = true;
 
+    // directly use parent context's createElement() function
+    // so that components rendered by router-view can resolve named slots
+    var h = parent.$createElement;
     var name = props.name;
     var route = parent.$route;
     var cache = parent._routerViewCache || (parent._routerViewCache = {});
@@ -76032,6 +75974,12 @@ var View = {
       if (matched.instances[name] !== vm) {
         matched.instances[name] = val;
       }
+    }
+
+    // also regiseter instance in prepatch hook
+    // in case the same component instance is reused across different routes
+    ;(data.hook || (data.hook = {})).prepatch = function (_, vnode) {
+      matched.instances[name] = vnode.componentInstance;
     };
 
     // resolve props
@@ -76287,10 +76235,8 @@ var Link = {
     exact: Boolean,
     append: Boolean,
     replace: Boolean,
-    activeClass: {
-      type: String,
-      default: 'router-link-active'
-    },
+    activeClass: String,
+    exactActiveClass: String,
     event: {
       type: eventTypes,
       default: 'click'
@@ -76308,15 +76254,27 @@ var Link = {
 
     var classes = {};
     var globalActiveClass = router.options.linkActiveClass;
-    var activeClass = globalActiveClass == null
-      ? this.activeClass
-      : globalActiveClass;
+    var globalExactActiveClass = router.options.linkExactActiveClass;
+    // Support global empty active class
+    var activeClassFallback = globalActiveClass == null
+            ? 'router-link-active'
+            : globalActiveClass;
+    var exactActiveClassFallback = globalExactActiveClass == null
+            ? 'router-link-exact-active'
+            : globalExactActiveClass;
+    var activeClass = this.activeClass == null
+            ? activeClassFallback
+            : this.activeClass;
+    var exactActiveClass = this.exactActiveClass == null
+            ? exactActiveClassFallback
+            : this.exactActiveClass;
     var compareTarget = location.path
       ? createRoute(null, location, null, router)
       : route;
 
+    classes[exactActiveClass] = isSameRoute(current, compareTarget);
     classes[activeClass] = this.exact
-      ? isSameRoute(current, compareTarget)
+      ? classes[exactActiveClass]
       : isIncludedRoute(current, compareTarget);
 
     var handler = function (e) {
@@ -76518,127 +76476,6 @@ function parsePath (path) {
 
 function cleanPath (path) {
   return path.replace(/\/\//g, '/')
-}
-
-/*  */
-
-function createRouteMap (
-  routes,
-  oldPathMap,
-  oldNameMap
-) {
-  var pathMap = oldPathMap || Object.create(null);
-  var nameMap = oldNameMap || Object.create(null);
-
-  routes.forEach(function (route) {
-    addRouteRecord(pathMap, nameMap, route);
-  });
-
-  return {
-    pathMap: pathMap,
-    nameMap: nameMap
-  }
-}
-
-function addRouteRecord (
-  pathMap,
-  nameMap,
-  route,
-  parent,
-  matchAs
-) {
-  var path = route.path;
-  var name = route.name;
-  if (process.env.NODE_ENV !== 'production') {
-    assert(path != null, "\"path\" is required in a route configuration.");
-    assert(
-      typeof route.component !== 'string',
-      "route config \"component\" for path: " + (String(path || name)) + " cannot be a " +
-      "string id. Use an actual component instead."
-    );
-  }
-
-  var record = {
-    path: normalizePath(path, parent),
-    components: route.components || { default: route.component },
-    instances: {},
-    name: name,
-    parent: parent,
-    matchAs: matchAs,
-    redirect: route.redirect,
-    beforeEnter: route.beforeEnter,
-    meta: route.meta || {},
-    props: route.props == null
-      ? {}
-      : route.components
-        ? route.props
-        : { default: route.props }
-  };
-
-  if (route.children) {
-    // Warn if route is named and has a default child route.
-    // If users navigate to this route by name, the default child will
-    // not be rendered (GH Issue #629)
-    if (process.env.NODE_ENV !== 'production') {
-      if (route.name && route.children.some(function (child) { return /^\/?$/.test(child.path); })) {
-        warn(
-          false,
-          "Named Route '" + (route.name) + "' has a default child route. " +
-          "When navigating to this named route (:to=\"{name: '" + (route.name) + "'\"), " +
-          "the default child route will not be rendered. Remove the name from " +
-          "this route and use the name of the default child route for named " +
-          "links instead."
-        );
-      }
-    }
-    route.children.forEach(function (child) {
-      var childMatchAs = matchAs
-        ? cleanPath((matchAs + "/" + (child.path)))
-        : undefined;
-      addRouteRecord(pathMap, nameMap, child, record, childMatchAs);
-    });
-  }
-
-  if (route.alias !== undefined) {
-    if (Array.isArray(route.alias)) {
-      route.alias.forEach(function (alias) {
-        var aliasRoute = {
-          path: alias,
-          children: route.children
-        };
-        addRouteRecord(pathMap, nameMap, aliasRoute, parent, record.path);
-      });
-    } else {
-      var aliasRoute = {
-        path: route.alias,
-        children: route.children
-      };
-      addRouteRecord(pathMap, nameMap, aliasRoute, parent, record.path);
-    }
-  }
-
-  if (!pathMap[record.path]) {
-    pathMap[record.path] = record;
-  }
-
-  if (name) {
-    if (!nameMap[name]) {
-      nameMap[name] = record;
-    } else if (process.env.NODE_ENV !== 'production' && !matchAs) {
-      warn(
-        false,
-        "Duplicate named routes definition: " +
-        "{ name: \"" + name + "\", path: \"" + (record.path) + "\" }"
-      );
-    }
-  }
-}
-
-function normalizePath (path, parent) {
-  path = path.replace(/\/$/, '');
-  if (path[0] === '/') { return path }
-  if (parent == null) { return path }
-  return cleanPath(((parent.path) + "/" + path))
 }
 
 var index$1 = Array.isArray || function (arr) {
@@ -77079,24 +76916,6 @@ index.tokensToRegExp = tokensToRegExp_1;
 
 /*  */
 
-var regexpCache = Object.create(null);
-
-function getRouteRegex (path) {
-  var hit = regexpCache[path];
-  var keys, regexp;
-
-  if (hit) {
-    keys = hit.keys;
-    regexp = hit.regexp;
-  } else {
-    keys = [];
-    regexp = index(path, keys);
-    regexpCache[path] = { keys: keys, regexp: regexp };
-  }
-
-  return { keys: keys, regexp: regexp }
-}
-
 var regexpCompileCache = Object.create(null);
 
 function fillParams (
@@ -77115,6 +76934,156 @@ function fillParams (
     }
     return ''
   }
+}
+
+/*  */
+
+function createRouteMap (
+  routes,
+  oldPathList,
+  oldPathMap,
+  oldNameMap
+) {
+  // the path list is used to control path matching priority
+  var pathList = oldPathList || [];
+  var pathMap = oldPathMap || Object.create(null);
+  var nameMap = oldNameMap || Object.create(null);
+
+  routes.forEach(function (route) {
+    addRouteRecord(pathList, pathMap, nameMap, route);
+  });
+
+  // ensure wildcard routes are always at the end
+  for (var i = 0, l = pathList.length; i < l; i++) {
+    if (pathList[i] === '*') {
+      pathList.push(pathList.splice(i, 1)[0]);
+      l--;
+      i--;
+    }
+  }
+
+  return {
+    pathList: pathList,
+    pathMap: pathMap,
+    nameMap: nameMap
+  }
+}
+
+function addRouteRecord (
+  pathList,
+  pathMap,
+  nameMap,
+  route,
+  parent,
+  matchAs
+) {
+  var path = route.path;
+  var name = route.name;
+  if (process.env.NODE_ENV !== 'production') {
+    assert(path != null, "\"path\" is required in a route configuration.");
+    assert(
+      typeof route.component !== 'string',
+      "route config \"component\" for path: " + (String(path || name)) + " cannot be a " +
+      "string id. Use an actual component instead."
+    );
+  }
+
+  var normalizedPath = normalizePath(path, parent);
+  var record = {
+    path: normalizedPath,
+    regex: compileRouteRegex(normalizedPath),
+    components: route.components || { default: route.component },
+    instances: {},
+    name: name,
+    parent: parent,
+    matchAs: matchAs,
+    redirect: route.redirect,
+    beforeEnter: route.beforeEnter,
+    meta: route.meta || {},
+    props: route.props == null
+      ? {}
+      : route.components
+        ? route.props
+        : { default: route.props }
+  };
+
+  if (route.children) {
+    // Warn if route is named and has a default child route.
+    // If users navigate to this route by name, the default child will
+    // not be rendered (GH Issue #629)
+    if (process.env.NODE_ENV !== 'production') {
+      if (route.name && route.children.some(function (child) { return /^\/?$/.test(child.path); })) {
+        warn(
+          false,
+          "Named Route '" + (route.name) + "' has a default child route. " +
+          "When navigating to this named route (:to=\"{name: '" + (route.name) + "'\"), " +
+          "the default child route will not be rendered. Remove the name from " +
+          "this route and use the name of the default child route for named " +
+          "links instead."
+        );
+      }
+    }
+    route.children.forEach(function (child) {
+      var childMatchAs = matchAs
+        ? cleanPath((matchAs + "/" + (child.path)))
+        : undefined;
+      addRouteRecord(pathList, pathMap, nameMap, child, record, childMatchAs);
+    });
+  }
+
+  if (route.alias !== undefined) {
+    if (Array.isArray(route.alias)) {
+      route.alias.forEach(function (alias) {
+        var aliasRoute = {
+          path: alias,
+          children: route.children
+        };
+        addRouteRecord(pathList, pathMap, nameMap, aliasRoute, parent, record.path);
+      });
+    } else {
+      var aliasRoute = {
+        path: route.alias,
+        children: route.children
+      };
+      addRouteRecord(pathList, pathMap, nameMap, aliasRoute, parent, record.path);
+    }
+  }
+
+  if (!pathMap[record.path]) {
+    pathList.push(record.path);
+    pathMap[record.path] = record;
+  }
+
+  if (name) {
+    if (!nameMap[name]) {
+      nameMap[name] = record;
+    } else if (process.env.NODE_ENV !== 'production' && !matchAs) {
+      warn(
+        false,
+        "Duplicate named routes definition: " +
+        "{ name: \"" + name + "\", path: \"" + (record.path) + "\" }"
+      );
+    }
+  }
+}
+
+function compileRouteRegex (path) {
+  var regex = index(path);
+  if (process.env.NODE_ENV !== 'production') {
+    var keys = {};
+    regex.keys.forEach(function (key) {
+      warn(!keys[key.name], ("Duplicate param keys in route with path: \"" + path + "\""));
+      keys[key.name] = true;
+    });
+  }
+  return regex
+}
+
+function normalizePath (path, parent) {
+  path = path.replace(/\/$/, '');
+  if (path[0] === '/') { return path }
+  if (parent == null) { return path }
+  return cleanPath(((parent.path) + "/" + path))
 }
 
 /*  */
@@ -77153,7 +77122,7 @@ function normalizeLocation (
   var basePath = (current && current.path) || '/';
   var path = parsedPath.path
     ? resolvePath(parsedPath.path, basePath, append || next.append)
-    : (current && current.path) || '/';
+    : basePath;
 
   var query = resolveQuery(
     parsedPath.query,
@@ -77189,11 +77158,12 @@ function createMatcher (
   router
 ) {
   var ref = createRouteMap(routes);
+  var pathList = ref.pathList;
   var pathMap = ref.pathMap;
   var nameMap = ref.nameMap;
 
   function addRoutes (routes) {
-    createRouteMap(routes, pathMap, nameMap);
+    createRouteMap(routes, pathList, pathMap, nameMap);
   }
 
   function match (
@@ -77209,7 +77179,7 @@ function createMatcher (
       if (process.env.NODE_ENV !== 'production') {
         warn(record, ("Route with name '" + name + "' does not exist"));
       }
-      var paramNames = getRouteRegex(record.path).keys
+      var paramNames = record.regex.keys
         .filter(function (key) { return !key.optional; })
         .map(function (key) { return key.name; });
 
@@ -77231,9 +77201,11 @@ function createMatcher (
       }
     } else if (location.path) {
       location.params = {};
-      for (var path in pathMap) {
-        if (matchRoute(path, location.params, location.path)) {
-          return _createRoute(pathMap[path], location, redirectedFrom)
+      for (var i = 0; i < pathList.length; i++) {
+        var path = pathList[i];
+        var record$1 = pathMap[path];
+        if (matchRoute(record$1.regex, location.path, location.params)) {
+          return _createRoute(record$1, location, redirectedFrom)
         }
       }
     }
@@ -77346,14 +77318,11 @@ function createMatcher (
 }
 
 function matchRoute (
+  regex,
   path,
-  params,
-  pathname
+  params
 ) {
-  var ref = getRouteRegex(path);
-  var regexp = ref.regexp;
-  var keys = ref.keys;
-  var m = pathname.match(regexp);
+  var m = path.match(regex);
 
   if (!m) {
     return false
@@ -77362,9 +77331,11 @@ function matchRoute (
   }
 
   for (var i = 1, len = m.length; i < len; ++i) {
-    var key = keys[i - 1];
+    var key = regex.keys[i - 1];
     var val = typeof m[i] === 'string' ? decodeURIComponent(m[i]) : m[i];
-    if (key) { params[key.name] = val; }
+    if (key) {
+      params[key.name] = val;
+    }
   }
 
   return true
@@ -77613,8 +77584,13 @@ History.prototype.confirmTransition = function confirmTransition (route, onCompl
 
   var current = this.current;
   var abort = function (err) {
-    if (err instanceof Error) {
-      this$1.errorCbs.forEach(function (cb) { cb(err); });
+    if (isError(err)) {
+      if (this$1.errorCbs.length) {
+        this$1.errorCbs.forEach(function (cb) { cb(err); });
+      } else {
+        warn(false, 'uncaught error during route navigation:');
+        console.error(err);
+      }
     }
     onAbort && onAbort(err);
   };
@@ -77652,11 +77628,17 @@ History.prototype.confirmTransition = function confirmTransition (route, onCompl
     }
     try {
       hook(route, current, function (to) {
-        if (to === false || to instanceof Error) {
+        if (to === false || isError(to)) {
           // next(false) -> abort navigation, ensure current URL
           this$1.ensureURL(true);
           abort(to);
-        } else if (typeof to === 'string' || typeof to === 'object') {
+        } else if (
+          typeof to === 'string' ||
+          (typeof to === 'object' && (
+            typeof to.path === 'string' ||
+            typeof to.name === 'string'
+          ))
+        ) {
           // next('/') or next({ path: '/' }) -> redirect
           abort();
           if (typeof to === 'object' && to.replace) {
@@ -77677,10 +77659,11 @@ History.prototype.confirmTransition = function confirmTransition (route, onCompl
   runQueue(queue, iterator, function () {
     var postEnterCbs = [];
     var isValid = function () { return this$1.current === route; };
-    var enterGuards = extractEnterGuards(activated, postEnterCbs, isValid);
     // wait until async components are resolved before
     // extracting in-component enter guards
-    runQueue(enterGuards, iterator, function () {
+    var enterGuards = extractEnterGuards(activated, postEnterCbs, isValid);
+    var queue = enterGuards.concat(this$1.router.resolveHooks);
+    runQueue(queue, iterator, function () {
       if (this$1.pending !== route) {
         return abort()
       }
@@ -77777,8 +77760,10 @@ function extractUpdateHooks (updated) {
 }
 
 function bindGuard (guard, instance) {
-  return function boundRouteGuard () {
-    return guard.apply(instance, arguments)
+  if (instance) {
+    return function boundRouteGuard () {
+      return guard.apply(instance, arguments)
+    }
   }
 }
 
@@ -77832,70 +77817,65 @@ function poll (
 }
 
 function resolveAsyncComponents (matched) {
-  var _next;
-  var pending = 0;
-  var error = null;
+  return function (to, from, next) {
+    var hasAsync = false;
+    var pending = 0;
+    var error = null;
 
-  flatMapComponents(matched, function (def, _, match, key) {
-    // if it's a function and doesn't have cid attached,
-    // assume it's an async component resolve function.
-    // we are not using Vue's default async resolving mechanism because
-    // we want to halt the navigation until the incoming component has been
-    // resolved.
-    if (typeof def === 'function' && def.cid === undefined) {
-      pending++;
+    flatMapComponents(matched, function (def, _, match, key) {
+      // if it's a function and doesn't have cid attached,
+      // assume it's an async component resolve function.
+      // we are not using Vue's default async resolving mechanism because
+      // we want to halt the navigation until the incoming component has been
+      // resolved.
+      if (typeof def === 'function' && def.cid === undefined) {
+        hasAsync = true;
+        pending++;
 
-      var resolve = once(function (resolvedDef) {
-        // save resolved on async factory in case it's used elsewhere
-        def.resolved = typeof resolvedDef === 'function'
-          ? resolvedDef
-          : _Vue.extend(resolvedDef);
-        match.components[key] = resolvedDef;
-        pending--;
-        if (pending <= 0 && _next) {
-          _next();
+        var resolve = once(function (resolvedDef) {
+          // save resolved on async factory in case it's used elsewhere
+          def.resolved = typeof resolvedDef === 'function'
+            ? resolvedDef
+            : _Vue.extend(resolvedDef);
+          match.components[key] = resolvedDef;
+          pending--;
+          if (pending <= 0) {
+            next();
+          }
+        });
+
+        var reject = once(function (reason) {
+          var msg = "Failed to resolve async component " + key + ": " + reason;
+          process.env.NODE_ENV !== 'production' && warn(false, msg);
+          if (!error) {
+            error = isError(reason)
+              ? reason
+              : new Error(msg);
+            next(error);
+          }
+        });
+
+        var res;
+        try {
+          res = def(resolve, reject);
+        } catch (e) {
+          reject(e);
         }
-      });
-
-      var reject = once(function (reason) {
-        var msg = "Failed to resolve async component " + key + ": " + reason;
-        process.env.NODE_ENV !== 'production' && warn(false, msg);
-        if (!error) {
-          error = reason instanceof Error
-            ? reason
-            : new Error(msg);
-          if (_next) { _next(error); }
-        }
-      });
-
-      var res;
-      try {
-        res = def(resolve, reject);
-      } catch (e) {
-        reject(e);
-      }
-      if (res) {
-        if (typeof res.then === 'function') {
-          res.then(resolve, reject);
-        } else {
-          // new syntax in Vue 2.3
-          var comp = res.component;
-          if (comp && typeof comp.then === 'function') {
-            comp.then(resolve, reject);
+        if (res) {
+          if (typeof res.then === 'function') {
+            res.then(resolve, reject);
+          } else {
+            // new syntax in Vue 2.3
+            var comp = res.component;
+            if (comp && typeof comp.then === 'function') {
+              comp.then(resolve, reject);
+            }
           }
         }
       }
-    }
-  });
+    });
 
-  return function (to, from, next) {
-    if (error) {
-      next(error);
-    } else if (pending <= 0) {
-      next();
-    } else {
-      _next = next;
-    }
+    if (!hasAsync) { next(); }
   }
 }
 
@@ -77927,6 +77907,10 @@ function once (fn) {
     called = true;
     return fn.apply(this, arguments)
   }
+}
+
+function isError (err) {
+  return Object.prototype.toString.call(err).indexOf('Error') > -1
 }
 
 /*  */
@@ -78177,6 +78161,7 @@ var VueRouter = function VueRouter (options) {
   this.apps = [];
   this.options = options;
   this.beforeHooks = [];
+  this.resolveHooks = [];
   this.afterHooks = [];
   this.matcher = createMatcher(options.routes || [], this);
 
@@ -78262,11 +78247,15 @@ VueRouter.prototype.init = function init (app /* Vue component instance */) {
 };
 
 VueRouter.prototype.beforeEach = function beforeEach (fn) {
-  this.beforeHooks.push(fn);
+  return registerHook(this.beforeHooks, fn)
+};
+
+VueRouter.prototype.beforeResolve = function beforeResolve (fn) {
+  return registerHook(this.resolveHooks, fn)
 };
 
 VueRouter.prototype.afterEach = function afterEach (fn) {
-  this.afterHooks.push(fn);
+  return registerHook(this.afterHooks, fn)
 };
 
 VueRouter.prototype.onReady = function onReady (cb, errorCb) {
@@ -78345,13 +78334,21 @@ VueRouter.prototype.addRoutes = function addRoutes (routes) {
 
 Object.defineProperties( VueRouter.prototype, prototypeAccessors );
 
+function registerHook (list, fn) {
+  list.push(fn);
+  return function () {
+    var i = list.indexOf(fn);
+    if (i > -1) { list.splice(i, 1); }
+  }
+}
+
 function createHref (base, fullPath, mode) {
   var path = mode === 'hash' ? '#' + fullPath : fullPath;
   return base ? cleanPath(base + '/' + path) : path
 }
 
 VueRouter.install = install;
-VueRouter.version = '2.4.0';
+VueRouter.version = '2.5.2';
 
 if (inBrowser && window.Vue) {
   window.Vue.use(VueRouter);

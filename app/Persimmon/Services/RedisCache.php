@@ -4,6 +4,7 @@ namespace Persimmon\Services;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 use Models\Options;
 use Models\Posts;
 
@@ -41,10 +42,12 @@ class RedisCache {
         $post = cache($key);
         if (empty($post)) {
             $post = Posts::OfType('post')->where('flag', $flag)->first();
-            $post->categories;
-            $post->tags;
-            $post->user;
-            cache([$key => $post], $this->expiresAt);
+            if(!empty($post)){
+                $post->categories;
+                $post->tags;
+                $post->user;
+                cache([$key => $post], $this->expiresAt);
+            }
         }
         return $post;
     }

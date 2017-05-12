@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\App;
 
 
+use Illuminate\Support\Facades\Session;
 use Models\Links;
 use Persimmon\Interfaces\CreatorInterface;
 use App\Http\Controllers\Controller;
@@ -37,6 +38,8 @@ class HomeController extends Controller implements CreatorInterface
     {
         $post = app(\Persimmon\Services\RedisCache::class)->cachePost($flag);
 
+        !empty($post) ?: abort(404, '很抱歉，页面找不到了。');
+
         Posts::increment('views', 1);
 
         return view('app.post')->with(compact('post'));
@@ -50,6 +53,8 @@ class HomeController extends Controller implements CreatorInterface
     {
 
         $tags = Tags::where('tags_name', $tag)->first();
+
+        !empty($tags) ?: abort(404, '很抱歉，页面找不到了。');
 
         $posts = $tags->posts()->paginate(15);
 
@@ -66,6 +71,8 @@ class HomeController extends Controller implements CreatorInterface
     {
         $category = Categorys::where('category_flag', $flag)->first();
 
+        !empty($category) ?: abort(404, '很抱歉，页面找不到了。');
+
         $posts = $category->posts()->paginate(15);
 
         return view('app.home')->with(compact('posts', 'category'));
@@ -78,6 +85,7 @@ class HomeController extends Controller implements CreatorInterface
     public function friends()
     {
         $links = Links::all();
+
         return view('app.friends')->with(compact('links'));
     }
 
@@ -120,11 +128,5 @@ class HomeController extends Controller implements CreatorInterface
     public function creatorSuccess($model)
     {
         $this->response = ['status' => 'success', 'id' => $model->id, 'info' => '评论发布成功'];
-    }
-
-    public function debug()
-    {
-        //abc::findOrFail(100);
-        //die('bala,bala,bala~~~');
     }
 }
