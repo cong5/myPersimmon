@@ -182,6 +182,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Overtrue\LaravelLang\TranslationServiceProvider::class,
         zgldh\QiniuStorage\QiniuFilesystemServiceProvider::class,
+	Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         /**
          * Customer
          */
